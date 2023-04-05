@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit mobil</title>
+</head>
+<body>
+    <form action="/save_mobil" method="post">
+        <input type="hidden" name="id" value="{{mobil.id}}" id="">
+        <label for="">Nama Mobil</label>
+        <input type="text" value="{{mobil.merk}}" name="nama" id="">
+        <label for="">Nama Mobil</label>
+        <input type="text" value="{{mobil.platNomor}}" name="plat" id="">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</body>
+</html>

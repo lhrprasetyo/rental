@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Pesanan</title>
+</head>
+<body>
+    <p>edit pesanan</p>
+
+    <div style="padding-top: 56px;" ><form action="/save/<id>" style="margin:0;width:150px;height:150px",method='post'>
+        <div class="mb-3" >
+          <label for="" class="form-label">Nama</label>
+          <input type="text" class="form-control" name='nama' value='{{pesanan.nama}}' >
+        </div>
+        <div class="mb-3">
+          <label for="" class="form-label">Hari</label>
+          <input type="text" class="form-control" name="hari" value='{{pesanan.hari}}'>
+        </div>
+        <div class="mb-3">
+          <label for="" class="form-label">Tahun</label>
+          <input type="hidden" class="form-control" name="id" value="{{id}}">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form></div>
+</body>
+</html>
