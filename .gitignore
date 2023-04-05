@@ -8,6 +8,9 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+rental/
+__pycache__
+migrations/
 build/
 develop-eggs/
 dist/
