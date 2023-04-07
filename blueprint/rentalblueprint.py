@@ -91,7 +91,6 @@ def logout_account():
     return redirect('/')
 
 @rentalblueprint.route('/start')
-@login_required
 def input_tanggal():
     return render_template('tanggal.html')
 
@@ -111,7 +110,6 @@ def tanggal_input():
         return render_template('list_mobil_available.html',hari=hari,mobil_tersedia =mobil_tersedia,tanggal=tanggal)
 
 @rentalblueprint.route('/list_mobil')
-@login_required
 def listmobil():
     listmobil= Mobil.query.all()
     return render_template('list_mobil.html',mobil= listmobil)
