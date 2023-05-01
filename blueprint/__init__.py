@@ -1,1 +1,1 @@
-from .rentalblueprint import rentalblueprint,LoginManager
+from .rentalblueprint import rentalblueprint

@@ -13,34 +13,46 @@
     />
   </head>
 
-  <a href="/list_mobil" class="btn btn-primary" style="margin-left:18cm;position: fixed;">Ke List Mobil</a>
-  <table class="table table-striped-columns" style="margin-top: 1cm;">
-    <thead>
-      <th>Nama Peminjam</th>
-      <th>Merk Mobil</th>
-      <th>Durasi Peminjaman(hari)</th>
-      <th>Tanggal Peminjaman</th>
-      <th>Tanggal Kembali</th>
-      <th>Mobil Kembali</th>
-      <th>Total Harga</th>
-      <th>Action</th>
-    </thead>
-    <tbody>
-      {% for p in transaksi %}
-      <tr>
-        <td>{{p.namaPeminjam}}</td>
-        <td>{{p.merk}}</td>
-        <td>{{p.hari}}</td>
-        <td>{{p.tanggalPinjam}}</td>
-        <td>{{p.tanggalKembali}}</td>
-        <td>{{p.mobil_kembali}}</td>
-        <td>{{p.totalHarga}}</td>
-        <td><a href="/delete/{{p.id}}" class="btn btn-danger">Delete</a></td>
-      </tr>
-      {% endfor %}
-  </tbody>
-      
-  </table>
+  <div class="container">
+    <div class="col-md-12">
+      <table
+        class="table table-striped-columns table-bordered"
+        style="margin-top: 1cm"
+      >
+        <thead>
+          <th>Nama Peminjam</th>
+          <th>Merk Mobil</th>
+          <th>Durasi Peminjaman(hari)</th>
+          <th>Tanggal Peminjaman</th>
+          <th>Tanggal Kembali</th>
+          <th>Mobil Kembali</th>
+          <th>Total Harga</th>
+          <th>Action</th>
+        </thead>
+        <tbody>
+          {% for p in transaksi %}
+          <tr>
+            <td>{{p.namaPeminjam}}</td>
+            <td>{{p.merk}}</td>
+            <td>{{p.hari}}</td>
+            <td>{{p.tanggalPinjam}}</td>
+            <td>{{p.tanggalKembali}}</td>
+            <td>{{p.mobil_kembali}}</td>
+            <td>{{p.totalHarga}}</td>
+            <td>
+              <a href="/delete_transaksi/{{p.id}}" class="btn btn-danger"
+                >Delete</a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <h5 class="text-end">
+      <a href="/list_mobil" class="btn btn-primary">Ke List Mobil</a>
+    </h5>
+  </div>
 
   <body>
     <script

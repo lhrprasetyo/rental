@@ -46,45 +46,50 @@
         </div>
       </nav>
     </div>
-    <div style="padding-top: 56px;">
-      <form
-        enctype="multipart/form-data"
-        action="/simpan_mobil"
-        style="margin: 0; width: 150px; height: 150px"
-        method="post"
-      >
-        <div class="mb-3">
-          <label for="" class="form-label">Merk</label>
-          <input type="text" class="form-control" name="merk" id="" />
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col text-center mb-3">
+          <h2>Tambah Mobil</h2>
         </div>
-        <div class="mb-3">
-          <label for="" class="form-label">Plat</label>
-          <input type="text" class="form-control" name="plat" />
+      </div>
+      <div class="row justify-content-center mb-3">
+        <div class="col-md-6">
+          <form action="/simpan_mobil" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label for="merk" class="form-label">Merk Mobil</label>
+              <input type="text" class="form-control" name="merk" id="">
+            </div>
+            <div class="mb-3">
+              <label for="" class="form-label">Nomor Polisi</label>
+              <input type="text" class="form-control" name="plat" id="">
+            </div>
+            <div class="mb-3">
+              <label for="tahun" class="form-label">Tahun Mobil</label>
+              <input type="text" class="form-control" name="tahun" id="">
+            </div>
+            <div class="mb-3">
+              <label for="harga" class="form-label">Harga Sewa</label>
+              <input type="text" class="form-control" name="harga" id="">
+            </div>
+            <div class="mb-3">
+              <label for="denda" class="form-label">Denda mobil(perhari)</label>
+              <input type="text" class="form-control" name="denda" id="">
+            </div>
+            <div class="mb-3">
+              <label for="gambar" class="form-label">Masukkan Gambar Mobil</label>
+              <input type="file" class="form-control" name="img" id="">
+            </div>
+            <div class="mb-3">
+              <label for="" class="form-label">Tersedia</label>
+              <input type="checkbox" name="Available" id="Tersedia" checked>
+            </div>
+            <div class="mb-3">
+              <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+          </form>
         </div>
-        <div class="mb-3">
-          <label for="" class="form-label">Tahun</label>
-          <input type="text" class="form-control" name="tahun" />
-        </div>
-        <div class="mb-3">
-          <label for="" class="form-label">Harga</label>
-          <input type="text" class="form-control" name="harga" />
-        </div>
-        <div class="mb-3">
-          <label for="" class="form-label">Denda</label>
-          <input type="text" class="form-control" name="denda" />
-        </div>
-        <div class="mb-3">
-          <label for="" class="form-label">Gambar</label>
-          <input type="file" class="form-control" name="img" />
-        </div>
-        <div class="mb-3">
-          <label for="" class="form-label">Tersedia</label>
-          <input type="checkbox" name="Available" id="Tersedia" checked>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+      </div>
     </div>
-    <div></div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

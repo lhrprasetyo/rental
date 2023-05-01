@@ -2,26 +2,21 @@ from flask import Blueprint,render_template,request,render_template,redirect,Fla
 from models.rentalmodel import db,Mobil,Pinjaman,Transaksi,User
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import LoginManager,login_required,login_user
+from flask_login import login_required,login_user, logout_user
 from extensions import and_
 import os
 from datetime import timedelta,datetime,date
 
 
 UPLOAD_FOLDER = 'static\img'
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
+
 
 
 ALLOWED_EXTENSIONS={'jpg','jpeg','png','HEIC'}
 
 rentalblueprint = Blueprint('rentalblueprint',(__name__))
-login_manager = LoginManager()
-login_manager.init_app(app)
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
+
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -79,18 +74,19 @@ def login():
             return redirect('/')
         else:
             # Set session user_id
-            session['user_id'] = user.id
+            login_user(user)
             flash('Anda berhasil login')
             return redirect("/list_mobil")
     return render_template('login.html')
 
 @rentalblueprint.route('/logout')   
 def logout_account():
-    session.clear()
+    logout_user()
     flash('You have been logout.','info')
     return redirect('/')
 
 @rentalblueprint.route('/start')
+@login_required
 def input_tanggal():
     return render_template('tanggal.html')
 
@@ -110,6 +106,7 @@ def tanggal_input():
         return render_template('list_mobil_available.html',hari=hari,mobil_tersedia =mobil_tersedia,tanggal=tanggal)
 
 @rentalblueprint.route('/list_mobil')
+@login_required
 def listmobil():
     listmobil= Mobil.query.all()
     return render_template('list_mobil.html',mobil= listmobil)
@@ -132,7 +129,7 @@ def simpan_mobil():
         harga = int(a_harga)
         if gambar and allowed_file(gambar.filename):
             filename= secure_filename(gambar.filename)
-            gambar.save(os.path.join(app.config['UPLOAD_FOLDER'],filename)) 
+            gambar.save(os.path.join(UPLOAD_FOLDER,filename)) 
 
             f_gambar = os.path.join('static\img',filename)
             m=Mobil(merk =merk,platNomor=plat,tahun=tahun,harga=harga,denda = denda,gambar=f_gambar,mobil_status = status)
