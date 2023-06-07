@@ -1,35 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Pesanan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-</head>
-<body>
-  <div style="align-self: center;">
-    <table class="table table-striped-columns" style="margin-top: 0.4cm;">
-      <thead>
-        <th>Tanggal Pinjam</th>
-        <th>Tanggal Kembali</th>
-      </thead>
-      <tbody>
-        <td>{{pinjaman.tanggalPinjam}}</td>
-        <td>{{pinjaman.tanggalKembali}}</td>
-      </tbody>
-    </table>
-    <form action="/save/transaksi/" style="margin:0;width:150px;height:150px" method="post">
-      <p>Tambah Pesanan</p>
-        <div class="mb-3" >
-          <input type="Hidden" name="id" value="{{pinjaman.id}}">
-          
-          <label for="">Masukkan tanggal kembali aktual</label>
-          <input type="date" name="tanggal_kembali_aktual" id="">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transaksi Lanjutan</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <h1 class="text-center"> Form Transaksi</h1>
+        <div class="col-md-6 mt-3 pt-3">
+          <div class="row-md-2">
+            <label for="Nama" class="form-label">Nama Peminjam :</label>
+            <input type="text" class="form-control" name="namaPeminjam" id="" value="{{transaksi.namaPeminjam}}" />
+          </div>
+          <div class="row-md-2">
+            <div class="row-md-1 form-label">
+              <label for="Pinjam" class="">Tanggal Pinjam :</label>
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                <input
+                  type="text"
+                  class="form-control dateSt"
+                  name="tanggalP"
+                  id="dateSt"
+                  value="{{ transaksi.tanggalPinjam }}"
+                  readonly
+                  onchange=""
+                />
+              </div>
+              sampai :
+              <div class="col-sm">
+                <input
+                  type="text"
+                  class="form-control dateEn"
+                  name="tanggalK"
+                  id="dateEn"
+                  value="{{ transaksi.tanggalKembali }}"
+                  readonly
+                  onchange=""
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row-md-2">
+            <label for="Merk" class="form-label">Merk Mobil :</label>
+            <input
+              type="text"
+              class="form-control"
+              name="merk"
+              id=""
+              value="{{ transaksi.merk }}"
+              readonly
+            />
+          </div>
+          <div class="row-md-2">
+            <label for="Nama" class="form-label">Plat Nomor :</label>
+            <input
+              type="text"
+              class="form-control"
+              name="plat"
+              value="{{ transaksi.plat }}"
+              id=""
+              readonly
+            />
+          </div>
+          <form action="/save/transaksi" method= 'POST'>
+            <div class="row-md-2">
+              <label for="Nama" class="form-label">Tanggal Kembali Aktual :</label>
+              <input type="text" class="form-control" name="tanggal_kembali_aktual" readonly value="" id="tkA" />
+              <input type="hidden" name="id" value="{{transaksi.id}}" id="">
+            </div>
+        </div>
+        <div class="col-md-6 mt-3 pt-3">
+          <div class="row-md-2">
+            <label for="Nama" class="form-label">Harga Sewa :</label>
+            <input
+              type="text"
+              class="form-control"
+              name="totalHarga"
+              value="{{ transaksi.totalHarga }}"
+              id=""
+              readonly
+            />
+          </div>
+          <div class="row-md-2">
+            <label for="Nama" class="form-label">Dibayarkan :</label>
+            <input
+              type="text"
+              class="form-control"
+              name=""
+              value="{{ transaksi.dibayarkan }}"
+              id=""
+              readonly
+            />
+          </div>
+          <div class="row-md-2">
+            <label for="Nama" class="form-label">Sisa :</label>
+            <input
+              type="text"
+              class="form-control"
+              name=""
+              value="{{ transaksi.sisa }}"
+              id=""
+              readonly
+            />
+          </div>
+          <div class="row-md-2">
+            <label for="Nama" class="form-label">Harga Sewa Termasuk Denda (Jika ada):</label>
+            <input
+              type="text"
+              class="form-control"
+              name="hargaIncDenda"
+              value=""
+              id="hargaIncDenda"
+              readonly
+            />
+          </div>
+          <div class="row-md-2">
+            <label for="Nama" class="form-label">Tambah Pembayaran :</label>
+            <input
+              type="text"
+              class="form-control"
+              name="add_payment"
+              value=""
+              id=""
+            />
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="button pt-4 text-center">
+      <button class="btn btn-warning">Submit</button>
+    </div>
+    </form>
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-</body>
+    <script>
+      $(function() {
+        var minDate = new Date("{{ transaksi.tanggalKembali }}");
+        $("#tkA").datepicker({
+          minDate: minDate,
+          dateFormat: "yy-mm-dd",
+          onSelect: function(selectedDate) {
+            var actualReturnDate = new Date(selectedDate);
+            var returnDate = new Date("{{ transaksi.tanggalKembali }}");
+            var differenceInTime = actualReturnDate.getTime() - returnDate.getTime();
+            var differenceInDays = differenceInTime / (1000 * 3600 * 24);
+            var mobilDenda = {{ mobil.denda }};
+            var sisa = {{transaksi.sisa}}
+            var totalDenda = (differenceInDays * mobilDenda + sisa);
+            $("#hargaIncDenda").val(totalDenda);
+          }
+        });
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

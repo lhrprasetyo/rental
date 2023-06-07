@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <!-- Masukkan link CSS dan JavaScript yang diperlukan di sini -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js">
+    <style>
+        .summary {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        .chart {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard</h1>
+
+    <div class="summary">
+        <div class="summary-item">
+            <h3>Total Transaksi</h3>
+            <p>{{ total_transaksi }}</p>
+        </div>
+        <div class="summary-item">
+            <h3>Total Pengguna</h3>
+            <p>{{ total_pengguna }}</p>
+        </div>
+        <div class="summary-item">
+            <h3>Total Pendapatan</h3>
+            <p>{{ total_pendapatan }}</p>
+        </div>
+    </div>
+
+    <div class="chart">
+        <canvas id="pendapatanChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Ambil data dari Flask dan ubah menjadi variabel JavaScript
+        var labels = JSON.parse('{{ labels | tojson }}');
+        var pendapatanData = JSON.parse('{{ pendapatan_per_bulan | tojson }}');
+
+        // Buat grafik menggunakan Chart.js
+        var ctx = document.getElementById('pendapatanChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Pendapatan per Bulan',
+                    data: pendapatanData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

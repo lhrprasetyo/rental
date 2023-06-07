@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from extensions import *
-from blueprint import rentalblueprint
+from blueprint import rentalblueprint,loginBlueprint,mobilBlueprint,transaksiBlueprint,invoiceBlueprint
 from models import User
 
 UPLOAD_FOLDER = 'static\img'
@@ -23,6 +23,10 @@ def load_user(user_id):
 
 
 app.register_blueprint(rentalblueprint) 
+app.register_blueprint(loginBlueprint) 
+app.register_blueprint(mobilBlueprint) 
+app.register_blueprint(transaksiBlueprint) 
+app.register_blueprint(invoiceBlueprint) 
 
 
 if __name__ == "__main__":

@@ -13,40 +13,41 @@
     />
   </head>
   <body>
-    <div>
-      <nav
-        class="navbar navbar-expand-lg navbar-light bg-light"
-        style="top: 0; position: fixed; width: 100%; z-index: 1"
-        role="navigation"
+    <nav
+      class="navbar navbar-expand-lg bg-light fixed-top shadow-sm"
+      role="navigation"
+    >
+      <a class="navbar-brand" href="/list_mobil">Budi Rental</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
-        <a class="navbar-brand" href="#">Budi Rental</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/"
-                >List Mobil <span class="sr-only"></span
-              ></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/list_pesanan">List Peminjaman</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-    <div class="container mt-5">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ">
+          <li class="nav-item">
+            <a class="nav-link" href="/list_pesanan">List Booking</a>
+          </li>
+          <li class="nav-item">
+            <a href="/transaksi/1" class="nav-link">List transaksi</a>
+          </li>
+          <li class="nav-item">
+            <a href="/tambah_mobil" class="nav-link">Tambah Mobil</a>
+          </li>
+          <li class="nav-item d-flex">
+            <a href="/start" class="nav-link">Buat Pesanan</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container mt-5 pt-3">
       <div class="row">
         <div class="col text-center mb-3">
           <h2>Tambah Mobil</h2>
