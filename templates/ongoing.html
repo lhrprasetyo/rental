@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Pembayaran</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav
+      class="navbar navbar-expand-lg bg-light fixed-top shadow-sm"
+      role="navigation"
+    >
+      <a class="navbar-brand" href="/list_mobil">Budi Rental</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/list_pesanan">List Booking</a>
+          </li>
+          <li class="nav-item">
+            <a href="/transaksi/1" class="nav-link">List transaksi</a>
+          </li>
+          <li class="nav-item">
+            <a href="/tambah_mobil" class="nav-link">Tambah Mobil</a>
+          </li>
+          <li class="nav-item d-flex">
+            <a href="/start" class="nav-link">Buat Pesanan</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- navbar end -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <div class="header pt-5 mt-3">
+                    <h1 class="text-center">ADD PAYMENT</h1>
+                </div>
+                <div class="form-isi">
+                    <form action="/ongoing/{{id}}/pay" method="POST">
+                        <div class="row-md-2">
+                            <label for="" class="form-label">Nama Peminjam</label>
+                            <input type="text" value="{{tr.namaPeminjam}}" class="form-control" readonly id="">
+                        </div>
+                        <div class="row-md-2">
+                            <label for="" class="form-label">Merk Mobil</label>
+                            <input type="text" value="{{tr.merk}}" class="form-control" readonly id="">
+                        </div>
+                        <div class="row-md-2">
+                            <label for="" class="form-label">Plat Nomor</label>
+                            <input type="text" value="{{tr.plat}}" class="form-control" readonly id="">
+                        </div>
+                        <div class="row-md-2">
+                            <label for="" class="form-label">Dibayarkan</label>
+                            <input type="text" value="{{tr.dibayarkan}}" class="form-control" readonly id="">
+                        </div>
+                        <div class="row-md-2">
+                            <label for="" class="form-label">Sisa (yang belum dibayar)</label>
+                            <input type="text" value="{{tr.sisa}}" class="form-control" readonly id="">
+                        </div>
+                        <div class="row-md-2">
+                            <label for="" class="form-label">Total Harga</label>
+                            <input type="text" value="{{tr.totalHarga}}" class="form-control" readonly id="">
+                        </div>
+                        <div class="row-md-2">
+                            <label for="" class="form-label">Tambah Jumlah Pembayaran</label>
+                            <input type="text" name="tambahan" class="form-control"  id="">
+                        </div>
+                        <div class="buttons mt-2">
+                            <button class="btn btn-outline-primary">Tambah</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+
+
+
+
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

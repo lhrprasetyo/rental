@@ -4,45 +4,356 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LIST PENGEMBALIAN</title>
+    <title>LIST TRANSAKSI</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
     />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link
+      rel="stylesheet"
+      href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
-
-  <a href="/list_mobil" class="btn btn-primary" style="margin-left:18cm;position: fixed;">Ke List Mobil</a>
-  <table class="table table-striped-columns" style="margin-top: 1cm;">
-    <thead>
-      <th>Nama Peminjam</th>
-      <th>Merk Mobil</th>
-      <th>Durasi Peminjaman(hari)</th>
-      <th>Tanggal Peminjaman</th>
-      <th>Tanggal Kembali</th>
-      <th>Mobil Kembali</th>
-      <th>Total Harga</th>
-      <th>Action</th>
-    </thead>
-    <tbody>
-      {% for p in transaksi %}
-      <tr>
-        <td>{{p.namaPeminjam}}</td>
-        <td>{{p.merk}}</td>
-        <td>{{p.hari}}</td>
-        <td>{{p.tanggalPinjam}}</td>
-        <td>{{p.tanggalKembali}}</td>
-        <td>{{p.mobil_kembali}}</td>
-        <td>{{p.totalHarga}}</td>
-        <td><a href="/delete/{{p.id}}" class="btn btn-danger">Delete</a></td>
-      </tr>
-      {% endfor %}
-  </tbody>
-      
-  </table>
-
   <body>
+    <nav
+      class="navbar navbar-expand-lg bg-light fixed-top shadow-sm"
+      role="navigation"
+    >
+      <a class="navbar-brand" href="/list_mobil">Budi Rental</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/list_pesanan">List Booking</a>
+          </li>
+          <li class="nav-item">
+            <a href="/transaksi/1" class="nav-link">List transaksi</a>
+          </li>
+          <li class="nav-item">
+            <a href="/tambah_mobil" class="nav-link">Tambah Mobil</a>
+          </li>
+          <li class="nav-item d-flex">
+            <a href="/start" class="nav-link">Buat Pesanan</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container mt-5 pt-2">
+      <div class="col-md-12">
+        <h1 class="text-center mt-3">LIST TRANSAKSI</h1>
+
+        <div class="row">
+          <div class="col-8">
+            Filters :
+            <div class="row">
+              <div class="col-3">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    fdprocessedid="u60adp"
+                    aria-placeholder="Status Mobil"
+                  >
+                    {% if request.args.get('status_mobil', '') != '' %}
+                    {{request.args.get('status_mobil', '')}} {% else %} Status
+                    Mobil {% endif %}
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Dibooking', filter_date=request.args.get('filter_date', '')) }}">Dibooking</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Mobil dipinjam', filter_date=request.args.get('filter_date', '')) }}">Mobil Dipinjam</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Selesai', filter_date=request.args.get('filter_date', '')) }}">Selesai</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Dibatalkan', filter_date=request.args.get('filter_date', '')) }}">Dibatalkan</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='', filter_date=request.args.get('filter_date', '')) }}">All</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    fdprocessedid="u60adp"
+                  >
+                    {% if request.args.get('status_transaksi', '') != '' %}
+                    {{request.args.get('status_transaksi', '')}} {% else %}
+                    Status Transaksi {% endif %}
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_mobil=request.args.get('status_mobil', ''), status_transaksi='lunas', filter_date=request.args.get('filter_date', '')) }}">Lunas</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_mobil=request.args.get('status_mobil', ''), status_transaksi='Belum lunas', filter_date=request.args.get('filter_date', '')) }}">Belum Lunas</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_mobil=request.args.get('status_mobil', ''), status_transaksi='', filter_date=request.args.get('filter_date', '')) }}">All</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-3">
+                <form method="GET" action="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.page) }}">
+                  <div class="form-group">
+                    <input type="date" id="filter_date" name="filter_date" class="form-control" {% if not request.args.get('filter_date') %}value=""{% else %}value="{{ request.args.get('filter_date') }}"{% endif %}>
+                  </div>
+                  <input type="hidden" name="status_transaksi" value="{{ request.args.get('status_transaksi') }}">
+                  <input type="hidden" name="status_mobil" value="{{ request.args.get('status_mobil') }}">
+              </div>
+              <div class="col-3">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="text-end col-4">
+            {% if transaksi.prev_num is not none %}
+            <a
+              href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.prev_num) }}"
+              class="btn btn-outline-dark {% if transaksi.page == 1 %}disabled{% endif %}"
+            >
+              &laquo;
+            </a>
+            {% endif %} {% for page_num in transaksi.iter_pages(left_edge=1,
+            right_edge=1, left_current=1, right_current=2) %} {% if page_num %}
+            {% if transaksi.page == page_num %}
+            <a
+              href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num) }}"
+              class="btn btn-dark"
+              >{{ page_num }}</a
+            >
+            {% else %}
+            <a
+              href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num) }}"
+              class="btn btn-outline-dark"
+              >{{ page_num }}</a
+            >
+            {% endif %} {% else %} . . . {% endif %} {% endfor %} {% if
+            transaksi.next_num is not none %}
+            <a
+              href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.next_num) }}"
+              class="btn btn-dark"
+            >
+              &raquo;
+            </a>
+            {% endif %}
+            <p class="text-end mt-1">
+              Showing page {{ transaksi.page }} of {{ transaksi.pages }}
+            </p>
+          </div>
+        </div>
+        <table class="table table-bordered mt-3">
+          <thead>
+            <th>Nama Peminjam</th>
+            <th>Merk Mobil</th>
+            <th>Plat Mobil</th>
+            <th>Tanggal Peminjaman</th>
+            <th>Tanggal Kembali</th>
+            <th>Total Harga</th>
+            <th>Dibayarkan</th>
+            <th>Sisa</th>
+            <th>Status Transaksi</th>
+            <th>Status Mobil</th>
+            <th>Action</th>
+          </thead>
+          <tbody id="transaksiTable">
+            {% for p in transaksi.items %}
+            <tr>
+              <td>{{p.namaPeminjam}}</td>
+              <td>{{p.merk}}</td>
+              <td>{{p.plat}}</td>
+              <td>{{p.tanggalPinjam}} to {{p.tanggalKembali}}</td>
+              <td>
+                {{ p.mobil_kembali if p.mobil_kembali is not none else 'TBD' }}
+              </td>
+              <td>{{p.totalHarga}}</td>
+              <td>{{p.dibayarkan}}</td>
+              <td>{{p.sisa}}</td>
+              <td>
+                {{p.status_transaksi if p.status_transaksi is not none else
+                'TBD'}}
+              </td>
+              <td>
+                {{p.status_mobil if p.status_mobil is not none else 'TBD'}}
+              </td>
+              <td>
+                <div class="actions row">
+                  <div class="col-2 mt-2" style="text-decoration: none">
+                    <a href="/invoice/{{p.id}}" style="color: black">
+                      <i data-feather="printer"></i>
+                    </a>
+                  </div>
+                  <div class="dropdown col">
+                    <button
+                      class="btn"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i data-feather="more-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item disabled" href="#"
+                          >Ubah Status Mobil</a
+                        >
+                      </li>
+                      {% if p.status_mobil == 'Dibooking' %}
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          data-id=""
+                          href="/transaksi/cancel/{{p.id}}"
+                          >Cancel</a
+                        >
+                      </li>
+                      {% else %}
+                      <li>
+                        <a
+                          class="dropdown-item disabled"
+                          data-id=""
+                          href="/transaksi/cancel/{{p.id}}"
+                          >Cancel</a
+                        >
+                      </li>
+                      {% endif %}
+                      {% if p.status_mobil == 'Mobil dipinjam' or p.status_mobil
+                      == 'Selesai' or p.status_mobil == 'Dibatalkan' %}
+                      <li>
+                        <a class="dropdown-item disabled" data-id="" href="/"
+                          >Dipinjam</a
+                        >
+                      </li>
+                      {% else %}
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          data-id=""
+                          href="/ongoing/{{p.id_pinjaman}}"
+                          >Dipinjam</a
+                        >
+                      </li>
+                      {% endif %} {% if p.status_mobil == 'Selesai' or p.status_mobil == 'Dibatalkan' %}
+                      <li>
+                        <a
+                          class="dropdown-item disabled"
+                          data-id=""
+                          href="/transaksi/kembali/{{p.id}}"
+                          >Kembali</a
+                        >
+                      </li>
+                      {% else %}
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          data-id=""
+                          href="/transaksi/kembali/{{p.id}}"
+                          >Kembali</a
+                        >
+                      </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                </div>
+                <p class="text-muted fst-italic fw-light fs-6">last update: {{p.last_updated}}</p>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="text-center">
+      {% if transaksi.prev_num is not none %}
+      <a
+        href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.prev_num) }}"
+        class="btn btn-outline-dark {% if transaksi.page == 1 %}disabled{% endif %}"
+      >
+        &laquo;
+      </a>
+      {% endif %} {% for page_num in transaksi.iter_pages(left_edge=1,
+      right_edge=1, left_current=1, right_current=2) %} {% if page_num %} {% if
+      transaksi.page == page_num %}
+      <a
+        href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num) }}"
+        class="btn btn-dark"
+        >{{ page_num }}</a
+      >
+      {% else %}
+      <a
+        href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num) }}"
+        class="btn btn-outline-dark"
+        >{{ page_num }}</a
+      >
+      {% endif %} {% else %} . . . {% endif %} {% endfor %} {% if
+      transaksi.next_num is not none %}
+      <a
+        href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.next_num) }}"
+        class="btn btn-dark"
+      >
+        &raquo;
+      </a>
+      {% endif %}
+    </div>
+    <p class="text-center mt-1">
+      Showing page {{ transaksi.page }} of {{ transaksi.pages }}
+    </p>
+
+    <script>
+      feather.replace();
+    </script>
+    <script>
+      $(document).ready(function () {
+        // Inisialisasi datepicker
+        $("#filterDate").datepicker({
+          onSelect: function (dateText, inst) {
+            // Mengirim permintaan ke server
+            $.ajax({
+              url: "/transaksi",
+              type: "GET",
+              data: { filterDate: dateText },
+              success: function (data) {
+                // Memperbarui tampilan dengan hasilnya
+                $("#transaksiTable").html(data);
+              },
+              error: function (xhr, status, error) {
+                console.error(error);
+              }
+            });
+          }
+        });
+      });
+    </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

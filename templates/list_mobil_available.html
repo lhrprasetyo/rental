@@ -13,12 +13,12 @@
     />
   </head>
   <body>
+    <!-- navbar -->
     <nav
-      class="navbar navbar-expand-lg navbar-light bg-light"
-      style="top: 0; position: fixed; width: 100%; z-index: 1"
+      class="navbar navbar-expand-lg bg-light fixed-top shadow-sm"
       role="navigation"
     >
-      <a class="navbar-brand" href="#">Budi Rental</a>
+      <a class="navbar-brand" href="/list_mobil">Budi Rental</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -32,44 +32,68 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav ">
           <li class="nav-item">
-            <a class="nav-link" href="/list_pesanan">List Peminjaman</a>
+            <a class="nav-link" href="/list_pesanan">List Booking</a>
           </li>
-          <li style="padding-right: 100vh">
-            <a href="/tambah_mobil" class="btn btn-success">Tambah Mobil</a>
+          <li class="nav-item">
+            <a href="/transaksi/1" class="nav-link">List transaksi</a>
           </li>
-          <li class="nav-item" style="padding-left: 20vh">
-            <a href="/start" class="btn bt n-primary">Buat Pesanan</a>
+          <li class="nav-item">
+            <a href="/tambah_mobil" class="nav-link">Tambah Mobil</a>
           </li>
-          <li class="nav-item " style="padding-left:1%">
-            <a href="/transaksi" class="btn btn-primary">List transaksi</a>
+          <li class="nav-item d-flex">
+            <a href="/start" class="nav-link">Pilih Tanggal Lain</a>
           </li>
         </ul>
       </div>
     </nav>
-    <div class="card" style="padding-top: 56px;">
-      {% for a in mobil_tersedia %}
-      <div class="card" style="width: 18rem">
-        <img src="{{a.gambar}}" class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">{{a.merk}}</h5>
-          <p class="card-text">Nomor Polisi : {{a.platNomor}}</p>
-          <p class="card-text">Tahun Mobil : {{a.tahun}}</p>
-          <p class="card-text">Tarif/hari : {{a.harga}}</p>
-          <p class="card-text">Status : {{a.mobil_status}}</p>
-          <a href="/delete_mobil/{{a.id}}" class="btn btn-danger">Delete</a>
-          <form action="/pinjam/{{a.id}}" method="post">
-            <input type="Hidden" name="tanggal" value="{{tanggal}}" id="">
-            <input type="Hidden" name="hari" value = "{{hari}}"id="">
-            <button class="btn btn-success" type="submit">Pinjam</button>
-          </form>
-          <a href="/pesanan_mobil/{{a.id}}" class="btn btn-primary"
-            >List Pesanan</a
-          >
+    <!-- navbar end -->
+
+    <!-- card -->
+    <div class="container">
+      <div class="col-md-1"></div>
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col text-center mt-5 pt-5">
+            <h2>LIST MOBIL</h2>
+          </div>
+        </div>
+        <div class="card-container" style="display: flex; flex-direction: row">
+          {% for a in semua_mobil %}
+          <div class="card shadow-lg m-1 col-md-5">
+            <img src="{{a.gambar}}" class="card-img-top" height="300px" alt="" />
+            <div class="card-body">
+              <p class="card-text">Nomor Polisi : {{a.platNomor}}</p>
+              <p class="card-text">Tahun Mobil : {{a.tahun}}</p>
+              <p class="card-text">Tarif/hari : {{a.harga}}</p>
+              <p class="card-text">Denda/hari : {{a.denda}}</p>
+              <p class="card-text">Status : {{a.mobil_status}}</p>
+              <div class="buttons">
+                <a href="/delete_mobil/{{a.id}}" class="btn btn-danger pb-1
+              ">Delete</a>
+              <a href="/pesanan_mobil/{{a.id}}" class="btn btn-primary"
+                >List Pesanan</a
+              >
+              </div>
+              {% if a.mobil_status == 'Tersedia' %}
+              <div class="buttons2 mt-2">
+                <form action="/pinjam/{{a.id}}" method="post">
+                  <input type="Hidden" name="tanggal" value="{{tanggal}}" id="">
+                  <input type="Hidden" name="tanggalk" value = "{{tanggalk}}"id="">
+                  <button class="btn btn-success" type="submit">Pinjam</button>
+                </form>
+              </div>
+              {% else %}
+                
+              {% endif %}
+              
+            </div>
+          </div>
+          {% endfor %}
         </div>
       </div>
-      {% endfor %}
+      <div class="col-md-1"></div>
     </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"

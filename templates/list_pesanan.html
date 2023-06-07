@@ -12,35 +12,95 @@
       crossorigin="anonymous"
     />
   </head>
+  <nav
+      class="navbar navbar-expand-lg bg-light fixed-top shadow-sm"
+      role="navigation"
+    >
+      <a class="navbar-brand" href="/list_mobil">Budi Rental</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <a href="/list_mobil" class="btn btn-primary" style="margin-left:18cm;position: fixed;">Ke List Mobil</a>
-  <table class="table table-striped-columns" style="margin-top: 1cm;">
-    <thead>
-      <th>Nama Peminjam</th>
-      <th>Merk Mobil</th>
-      <th>Durasi Peminjaman(hari)</th>
-      <th>Tanggal Peminjaman</th>
-      <th>Tanggal Kembali</th>
-      <th>Total Harga</th>
-      <th>Action</th>
-    </thead>
-    <tbody>
-      {% for p in pesanan %}
-      <tr>
-        <td>{{p.namaPeminjam}}</td>
-        <td>{{p.merk}}</td>
-        <td>{{p.hari}}</td>
-        <td>{{p.tanggalPinjam}}</td>
-        <td>{{p.tanggalKembali}}</td>
-        <td>{{p.totalHarga}}</td>
-        <td><a href="/delete/{{p.id}}" class="btn btn-danger">Delete</a>
-        <a href="/transaksi/{{p.id}}" class="btn btn-success">Selesai Meminjam</a></td>
-      </tr>
-      {% endfor %}
-  </tbody>
-      
-  </table>
-
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ">
+          <li class="nav-item">
+            <a class="nav-link" href="/list_pesanan">List Booking</a>
+          </li>
+          <li class="nav-item">
+            <a href="/transaksi/1" class="nav-link">List transaksi</a>
+          </li>
+          <li class="nav-item">
+            <a href="/tambah_mobil" class="nav-link">Tambah Mobil</a>
+          </li>
+          <li class="nav-item d-flex">
+            <a href="/start" class="nav-link">Buat Pesanan</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  
+    <div class="container mt-5 pt-3">
+      <h2 class="text-center">List Pesanan</h2>
+      <div class="col-md-12">
+          <table class="table table-striped-columns table-bordered" style="margin-top: 1cm">
+              <thead>
+                  <th>Nama Peminjam</th>
+                  <th>Merk Mobil</th>
+                  <th>Plat Mobil</th>
+                  <th>Durasi Peminjaman(hari)</th>
+                  <th>Tanggal Peminjaman</th>
+                  <th>Total Harga</th>
+                  <th>Action</th>
+              </thead>
+              <tbody>
+                  {% for p in pesanan %}
+                  <tr>
+                      <td>{{p.namaPeminjam}}</td>
+                      <td>{{p.merk}}</td>
+                      <td>{{p.plat}}</td>
+                      <td>{{p.hari}}</td>
+                      <td>{{p.tanggalPinjam}} -> {{p.tanggalKembali}}</td>
+                      <td>{{p.totalHarga}}</td>
+                      <td>
+                          <a href="/delete/{{p.id}}" class="btn btn-danger">Delete</a>
+                          <a href="/ongoing/{{p.id}}" class="btn btn-success">Mobil Dipinjam</a>
+                      </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          <h5 class="text-end">
+              <a href="/list_mobil" class="btn btn-primary">Ke List Mobil</a>
+          </h5>
+      </div>
+  </div>
+  <div class="d-flex justify-content-center mt-4">
+    {% if pesanan.has_prev %}
+      <a class="btn btn-primary me-2" href="?page={{ pesanan.prev_num }}">Previous</a>
+    {% endif %}
+    {% for num in pesanan.iter_pages() %}
+      {% if num %}
+        {% if num == pesanan.page %}
+          <a class="btn btn-primary me-2" href="?page={{ num }}"><b>{{ num }}</b></a>
+        {% else %}
+          <a class="btn btn-primary me-2" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% else %}
+        <span class="btn btn-secondary me-2 disabled">&hellip;</span>
+      {% endif %}
+    {% endfor %}
+    {% if pesanan.has_next %}
+      <a class="btn btn-primary" href="?page={{ pesanan.next_num }}">Next</a>
+    {% endif %}
+  </div>
   <body>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"

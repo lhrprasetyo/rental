@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Pesanan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&display=swap">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+  <nav
+      class="navbar navbar-expand-lg bg-light fixed-top shadow-sm"
+      role="navigation"
+    >
+      <a class="navbar-brand" href="/list_mobil">Budi Rental</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ">
+          <li class="nav-item">
+            <a class="nav-link" href="/list_pesanan">List Booking</a>
+          </li>
+          <li class="nav-item">
+            <a href="/transaksi/1" class="nav-link">List transaksi</a>
+          </li>
+          <li class="nav-item">
+            <a href="/tambah_mobil" class="nav-link">Tambah Mobil</a>
+          </li>
+          <li class="nav-item d-flex">
+            <a href="/start" class="nav-link">Buat Pesanan</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mt-5 pt-3">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="text-center">
+                    <h1>Buat Pesanan</h1>
+                </div>
+                {% if tanggalk  %}
+                <form action="/save/pesanan/{{id}}" method="POST">
+                  <div class="row-md-2">
+                      <label for="Nama" class="form-label">Nama Peminjam :</label>
+                      <input type="text" class="form-control" name="namaPeminjam" id="">
+                  </div>
+                  <div class="row-md-2 mt-2 ">
+                      <div class="row-md-1 form-label">
+                          <label for="Pinjam" class="">Tanggal Pinjam :</label>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm">
+                              <input type="text" class="form-control dateSt" name="tanggalP" id="dateSt" value="{{ tanggal }}" readonly onchange="hitungHargaTotal()">
+                          </div>
+                          sampai :
+                          <div class="col-sm">
+                              <input type="text" class="form-control dateEn" name="tanggalK" id="dateEn" value="{{ tanggalk }}" readonly onchange="hitungHargaTotal()">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row-md-2 mt-2">
+                      <label for="Merk" class="form-label">Merk Mobil :</label>
+                      <input type="text" class="form-control" name="merk" id="" value="{{ mobil.merk }}" readonly>
+                  </div>
+                  <div class="row-md-2 mt-2">
+                      <label for="Nama" class="form-label">Plat Nomor :</label>
+                      <input type="text" class="form-control" name="plat" value="{{ mobil.platNomor }}" id="" readonly>
+                  </div>
+                  <div class="row-md-2 mt-2">
+                      <label for="Nama" class="form-label">Harga Sewa (Perhari) :</label>
+                      <input type="text" class="form-control" name="harga" value="{{ mobil.harga }}" id="hargaPerhari" readonly>
+                  </div>
+                  <div class="row-md-2 mt-2">
+                      <label for="Nama" class="form-label">Harga Sewa (Total):</label>
+                      <input type="text" class="form-control" name="hargaTotal" value="" id="hargaTotal" readonly>
+                  </div>
+                  <div class="row-md-2 mt-2">
+                      <label for="Nama" class="form-label">Down Payment (Jika ada) :</label>
+                      <input type="text" class="form-control" name="dibayarkan" value="" id="">
+                  </div>
+                  <div class="button pt-3">
+                      <button class="btn btn-warning">Submit</button>
+                  </div>
+              </form>
+              
+              <script>
+                // Fungsi untuk menghitung harga total
+                function hitungHargaTotal() {
+                    var tanggalPinjam = new Date(document.getElementById('dateSt').value);
+                    var tanggalKembali = new Date(document.getElementById('dateEn').value);
+                    var hargaPerhari = parseInt(document.getElementById('hargaPerhari').value);
+                    var hargaTotal = 0;
+            
+                    if (!isNaN(tanggalPinjam) && !isNaN(tanggalKembali) && !isNaN(hargaPerhari)) {
+                        var selisihWaktu = tanggalKembali.getTime() - tanggalPinjam.getTime() +1;
+                        var selisihHari = Math.ceil(selisihWaktu / (1000 * 3600 * 24));
+                        hargaTotal = hargaPerhari * selisihHari;
+                    }
+            
+                    document.getElementById('hargaTotal').value = hargaTotal;
+                }
+            
+                // Panggil fungsi hitungHargaTotal saat halaman dimuat
+                document.addEventListener('DOMContentLoaded', hitungHargaTotal);
+            </script>
+              
+                {% else %}
+                <form action="/save/pesanan/{{id}}" method="POST">
+                  <div class="row-md-2">
+                      <label for="Nama" class="form-label">Nama Peminjam :</label>
+                      <input type="text" class="form-control" name="namaPeminjam" id="">
+                  </div>
+                  <div class="row-md-2 mt-2 ">
+                      <div class="row-md-1 form-label">
+                        <label for="Pinjam" class="">Tanggal Pinjam :</label>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm">
+                          <input type="text" class="form-control dateSt" name="tanggalP" id="dateSt" readonly onchange="hitungHargaTotal()">
+                        </div>
+                        sampai :
+                        <div class="col-sm">
+                          <input type="text" class="form-control dateEn" name="tanggalK" id="dateEn" readonly onchange="hitungHargaTotal()">
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row-md-2 mt-2">
+                      <label for="Merk" class="form-label">Merk Mobil :</label>
+                      <input type="text" class="form-control" name="merk" id="" value="{{mobil.merk}}" readonly>
+                  </div>
+                  <div class="row-md-2 mt-2">
+                      <label for="Nama" class="form-label">Plat Nomor :</label>
+                      <input type="text" class="form-control" name="plat" value="{{mobil.platNomor}}" id="" readonly>
+                  </div>
+                  <div class="row-md-2 mt-2">
+                    <label for="Nama" class="form-label">Harga Sewa (Perhari):</label>
+                    <input type="text" class="form-control" name="hargaPerhari" value="{{ mobil.harga }}" id="hargaPerhari" readonly>
+                </div>
+                <div class="row-md-2 mt-2">
+                    <label for="Nama" class="form-label">Harga Sewa (Total):</label>
+                    <input type="text" class="form-control" name="hargaTotal" value="" id="hargaTotal" readonly>
+                </div>
+                  <div class="row-md-2 mt-2">
+                      <label for="Nama" class="form-label">Down Payment (Jika ada) :</label>
+                      <input type="text" class="form-control" name="dibayarkan" value="" id=""  >
+                  </div>
+                  <div class="button pt-3">
+                    <button class="btn btn-warning">Submit</button>
+                  </div>
+              </form>
+              <script type="text/javascript">
+                $(function() {
+                  $("#dateSt").datepicker({
+                    minDate: 0,
+                    dateFormat: "yy-mm-dd",
+                    beforeShowDay: function(date) {
+                      var dateString = $.datepicker.formatDate("yy-mm-dd", date);
+                      if (bookedDates.includes(dateString)) {
+                        return false;
+                      }
+                      return [true, ""];
+                    },
+                    onSelect: function(selectedDate) {
+                      var minDate = new Date(selectedDate);
+                      minDate.setDate(minDate.getDate());
+                      $("#dateEn").datepicker("option", "minDate", minDate);
+                    }
+                  });
+                
+                  $("#dateEn").datepicker({
+                    minDate: 0,
+                    dateFormat: "yy-mm-dd",
+                    beforeShowDay: function(date) {
+                      var dateString = $.datepicker.formatDate("yy-mm-dd", date);
+                      if (bookedDates.includes(dateString)) {
+                        return [false, "red-date", "Tanggal diblokir"];
+                      }
+                      return [true, ""];
+                    }
+                  });
+                
+                  var bookedDates = {{booked_dates | tojson | safe}};
+                });
+                  function hitungHargaTotal() {
+                    var tanggalPinjam = new Date(document.getElementById('dateSt').value);
+                    var tanggalKembali = new Date(document.getElementById('dateEn').value);
+                    var hargaPerhari = parseInt(document.getElementById('hargaPerhari').value);
+                    var hargaTotal = 0;
+                
+                    if (!isNaN(tanggalPinjam) && !isNaN(tanggalKembali) && !isNaN(hargaPerhari)) {
+                      var selisihWaktu = tanggalKembali.getTime() - tanggalPinjam.getTime() +1;
+                      var selisihHari = Math.ceil(selisihWaktu / (1000 * 3600 * 24));
+                      hargaTotal = hargaPerhari * selisihHari;
+                    }
+                
+                    document.getElementById('hargaTotal').value = hargaTotal;
+                  }
+              </script>
+                {% endif %}
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>
