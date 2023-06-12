@@ -4,7 +4,7 @@ from flask_login import login_required
 from models.rentalmodel import Mobil,Transaksi
 from datetime import timedelta,datetime,date
 
-import os,pdfkit
+import os,pdfkit,webbrowser
 invoiceBlueprint = Blueprint('invoiceBlueprint',(__name__))
 
 
@@ -22,8 +22,8 @@ def invoice(id):
         'tanggalKembali': transaksi.tanggalKembali,
         'totalHarga': transaksi.totalHarga,
         'date': dateNow,
-        'nomorPolisi': m.platNomor,
-        'merk': m.merk
+        'nomorPolisi': transaksi.plat,
+        'merk': transaksi.merk
     }
 
     rendered_template = render_template('invoice_template.html', data=invoice_data)
@@ -69,5 +69,5 @@ def invoice(id):
 
 @invoiceBlueprint.route('/invoice/pdf/<int:id>')
 def get_invoice_pdf(id):
-    pdf_file_path = f'invoices/invoice_{id}.pdf'
-    return send_file(pdf_file_path, mimetype='application/pdf')
+    # pdf_file_path = f'invoices/invoice_{id}.pdf'
+    return webbrowser.open_new_tab(f'invoices/invoice_{id}.pdf')

@@ -53,14 +53,27 @@
         <div class="col-md-2"></div>
         <div class="col-md-8 pt-5 mt-3">
           <h1 class="text-center">Edit Mobil</h1>
-          <form action="/save_mobil" method="post">
-            <input type="hidden" name="id" value="{{mobil.id}}" id="" />
+          <form action="/save_mobil" method="post" enctype="multipart/form-data">
+            {% for a in mobil %}
+            <input type="hidden" name="id" value="{{a.id}}" id="" />
+            <div class="mb-3">
+              <div class="images text-center">
+                <img
+              src="../{{a.gambar}}"
+              class=""
+              height="270px"
+              width="390px"
+              alt=""
+              />
+              </div>
+              <input type="file" class="form-control" value="{{a.gambar}}" name="img" id="">
+            <div/>
             <div class="mb-3">
               <label for="" class="form-label">Nama Mobil</label>
               <input
                 type="text"
                 class="form-control"
-                value="{{mobil.merk}}"
+                value="{{a.merk}}"
                 name="nama"
                 id=""
               />
@@ -70,7 +83,7 @@
               <input
                 type="text"
                 class="form-control"
-                value="{{mobil.platNomor}}"
+                value="{{a.platNomor}}"
                 name="plat"
                 id=""
               />
@@ -80,7 +93,7 @@
               <input
                 type="text"
                 class="form-control"
-                value="{{mobil.harga}}"
+                value="{{a.harga}}"
                 name="harga"
                 id=""
               />
@@ -90,11 +103,12 @@
               <input
                 type="text"
                 class="form-control"
-                value="{{mobil.denda}}"
+                value="{{a.denda}}"
                 name="denda"
                 id=""
               />
             </div>
+            {% endfor %}
             <div class="mb-2">
               <button type="submit" class="btn btn-primary">Submit</button>
             </div>

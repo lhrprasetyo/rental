@@ -2,7 +2,9 @@ from flask import Blueprint,request,render_template,redirect,flash,send_file,jso
 from models.rentalmodel import db,Mobil,Pinjaman,Transaksi
 from flask_login import login_required  
 from datetime import timedelta,datetime
-import os
+from extensions import func,or_,Pagination
+import os,math
+
 
 rentalblueprint = Blueprint('rentalblueprint',(__name__))
 
@@ -10,11 +12,18 @@ rentalblueprint = Blueprint('rentalblueprint',(__name__))
 @rentalblueprint.route('/start')
 @login_required
 def input_tanggal():
-    return render_template('tanggal.html')
+    return render_template('tanggal.html', page=1)
 
-@rentalblueprint.route('/start-check', methods=['POST'])
+# def paginate_data(data, items_per_page):
+#     paginated_data = []
+#     for i in range(0, len(data), items_per_page):
+#         page = data[i:i+items_per_page]
+#         paginated_data.append(page)
+#     return paginated_data
+
+@rentalblueprint.route('/start-check/<int:page>', methods=['POST', 'GET'])
 @login_required
-def tanggal_input():
+def tanggal_input(page):
     if request.method == 'POST':
         tanggal = datetime.strptime(request.form['tanggalP'], '%Y-%m-%d').date()
         tanggalk = datetime.strptime(request.form['tanggalK'], '%Y-%m-%d').date()
@@ -41,7 +50,8 @@ def tanggal_input():
         mobil_dipesan2 = Mobil.query.join(Transaksi).filter(
             Transaksi.tanggalPinjam <= tanggalk,
             Transaksi.tanggalKembali >= tanggal,
-            Transaksi.status_transaksi != 'Selesai',
+            Transaksi.status_mobil != 'Selesai',
+            Transaksi.status_mobil != 'Dibatalkan',
             ~Mobil.id.in_(mobil_tersedia_ids)
         ).all()
 
@@ -59,10 +69,17 @@ def tanggal_input():
             db.session.add(mobil)
         db.session.commit()
 
-        semua_mobil = mobil_tersedia + mobil_dipesan + mobil_dipesan2
-        semua_mobil.sort(key=lambda mobil: mobil.mobil_status, reverse=True)
+    items_per_page = 3
+    semua_mobil = Mobil.query.all()
+    total_items = len(semua_mobil)
+    total_pages = math.ceil(total_items / items_per_page)
 
-        return render_template('list_mobil_available.html', semua_mobil=semua_mobil, tanggal=tanggal, tanggalk=tanggalk)
+    start_idx = (page - 1) * items_per_page
+    end_idx = start_idx + items_per_page
+    paginated_data = semua_mobil[start_idx:end_idx]
+
+    return render_template('list_mobil_available.html', semua_mobil=paginated_data, page=page, total_pages=total_pages)
+
 
 
 #fitur order 2
@@ -83,7 +100,7 @@ def add_booking(id):
                 booked_dates.append(tanggal.strftime('%Y-%m-%d'))
 
     for i in tr:
-        if i.status_mobil != 'Selesai':
+        if i.status_mobil != 'Selesai' and i.status_mobil != 'Dibatalkan' :
             selisih = (i.tanggalKembali - i.tanggalPinjam).days
             selisih += 1
             for j in range(selisih):
@@ -137,7 +154,7 @@ def simpan_booking(id):
     id_pinjaman_baru = book.id
     statusMobil = "Dibooking" 
     statusTransaksi = "lunas" if f_sisa == 0 else "Belum lunas"
-    dateNow=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    dateNow=datetime.now().strftime("%Y-%m-%d")
     ts = Transaksi(namaPeminjam = f_nama,merk=f_merk,plat=f_plat,tanggalPinjam = f_tanggalP,tanggalKembali=f_tanggalK,totalHarga = total_harga,hari = hari,id_mobil = id, dibayarkan = f_dibayarkan,sisa = f_sisa, id_pinjaman = id_pinjaman_baru,status_transaksi = statusTransaksi,status_mobil=statusMobil,last_updated = dateNow)
     db.session.add(ts)
     db.session.commit()
@@ -177,7 +194,7 @@ def simpan_pesanan(id):
             total = int(harga) * 1
         else:
             total = int(hari) * int(harga)
-        dateNow=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        dateNow=datetime.now().strftime("%Y-%m-%d")
         p=Pinjaman(namaPeminjam=nama,hari = hari,id_mobil=id,plat = platN ,tanggalPinjam = tglP,tanggalKembali=tglK,merk = mobil,totalHarga=total,last_updated = dateNow)
         db.session.add(p)
         db.session.commit()
@@ -197,7 +214,7 @@ def save_edit_pesanan(id):
         nama = request.form.get('nama_peminjam')
         hari = request.form.get('jumlah_hari')
         p=Pinjaman(namaPeminjam=nama,hari = hari,id_mobil=id)
-        dateNow=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        dateNow=datetime.now().strftime("%Y-%m-%d")
         p.last_updated = dateNow
         db.session.add(p)
         db.session.commit()
@@ -209,7 +226,7 @@ def save_edit_pesanan(id):
 def change_status_tr(id):
     tr = Transaksi.query.filter_by(id_pinjaman = id).first()
     tr.status_mobil = "Mobil dipinjam"
-    dateNow=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    dateNow=datetime.now().strftime("%Y-%m-%d")
     tr.last_updated = dateNow
 
     db.session.add(tr) 
@@ -235,7 +252,7 @@ def add_payment(id):
         print(tr.status_transaksi)
         tr.status_transaksi = 'lunas'
 
-    dateNow= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    dateNow= datetime.now().strftime("%Y-%m-%d`")
     tr.last_updated = dateNow
     
     db.session.add(tr)

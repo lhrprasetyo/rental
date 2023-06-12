@@ -23,6 +23,7 @@ class Mobil(db.Model):
     pinjaman = db.relationship('Pinjaman', back_populates='mobil')
     transaksi = db.relationship('Transaksi', back_populates='mobil')
     last_updated = db.Column(db.String(100))
+    edited_by = db.Column(db.String(50))
 
     def __repr__(self) -> str:
         return f'<{self.merk}>'

@@ -63,7 +63,7 @@
       <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-          <form action="/start-check" method="post">
+          <form action="{{ url_for('rentalblueprint.tanggal_input', page=1) }}" method="get">
             <div class="forms">
               <label for="" class="form-label">Masukkan tanggal Pinjam</label>
               <input
@@ -83,11 +83,14 @@
                 readonly
                 placeholder="masukkan tanggal disini"
               />
+              <!-- Tambahkan input tersembunyi untuk menyimpan nilai parameter page -->
+              <input type="hidden" name="page" value="{{ page }}">
             </div>
             <div class="buttons mt-3 text-end">
               <button class="btn btn-primary">Submit</button>
             </div>
           </form>
+          
         </div>
         <div class="col-md-4"></div>
       </div>

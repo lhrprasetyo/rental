@@ -2,7 +2,7 @@ from flask import Blueprint,render_template,request,render_template,redirect,fla
 from flask_login import login_required
 from models.rentalmodel import db,Mobil,Pinjaman,Transaksi
 from datetime import timedelta,datetime,date
-from extensions import and_
+from extensions import and_,or_
 import os
 
 
@@ -16,14 +16,15 @@ ROWS_PER_PAGE = 5
 def list_transaksi(page):
     tr = Transaksi.query.all()
     for a in tr:
-        if a.sisa != 0 and not a.status_transaksi.endswith('Belum lunas'):
-            a.status_transaksi += 'Belum lunas'
+        if a.sisa != 0 and not a.status_transaksi.endswith('Belum lunas') and a.status_transaksi != "Transaksi dibatalkan" :
+            a.status_transaksi = 'Belum lunas'
             db.session.add(a)
             db.session.commit()
 
     status_mobil = request.args.get('status_mobil')
     status_transaksi = request.args.get('status_transaksi')
     filter_date = request.args.get('filter_date')
+    search = request.args.get('search')
 
     transaksi_query = Transaksi.query
 
@@ -36,10 +37,20 @@ def list_transaksi(page):
     if filter_date:
         filter_date = datetime.strptime(filter_date, '%Y-%m-%d')
         transaksi_query = transaksi_query.filter(and_(Transaksi.tanggalPinjam <= filter_date, Transaksi.tanggalKembali >= filter_date))
+    
+    if search:
+        transaksi_query = transaksi_query.filter(
+            or_(
+                Transaksi.namaPeminjam.like(f'%{search}%'),
+                Transaksi.merk.like(f'%{search}%')
+            )
+        )
+
+
 
     transaksi_paginated = transaksi_query.paginate(page=page, per_page=ROWS_PER_PAGE)
 
-    return render_template('list_transaksi.html', transaksi=transaksi_paginated, page=page)
+    return render_template('list_transaksi.html', transaksi=transaksi_paginated ,page=page)
 
 
 # simpan transaksi 
@@ -67,7 +78,7 @@ def save_transaksi():
         else:
             data.status_transaksi = 'Belum lunas'
 
-        dateNow=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        dateNow=datetime.now().strftime("%Y-%m-%d")
         data.last_updated = dateNow
 
         db.session.add(data)
@@ -95,15 +106,31 @@ def data_transaksi(id):
     return render_template('form_transaksi.html',id = id,transaksi=data,mobil = data2)
 
 # cancel booking 
-@transaksiBlueprint.route('/transaksi/cancel/<int:id>')
+@transaksiBlueprint.route('/transaksi/cancel/<sumber>/<int:id>')
 @login_required
-def cancel_booking(id):
-    tr = Transaksi.query.filter_by(id=id).first()
+def cancel_booking(sumber,id):
+    if sumber == 'transaksi':
+        tr = Transaksi.query.filter_by(id=id).first()
+        print(f'id tr : {tr.id}')
+        p = Pinjaman.query.filter_by(id = tr.id_pinjaman).first()    
+
+    elif sumber == 'pinjaman':
+        p = Pinjaman.query.filter_by(id=id).first()
+        print(f'id pinjaman : {p.id}')
+        tr = Transaksi.query.filter_by(id_pinjaman=p.id).first()
+
     tr.status_mobil = 'Dibatalkan'
     tr.status_transaksi = 'Transaksi dibatalkan'
-
+    a = tr.sisa
+    tr.sisa-= a
+    tr.dibayarkan = 0.5 * int(tr.totalHarga)
 
     db.session.add(tr)
     db.session.commit()
+    db.session.delete(p)
+    db.session.commit()
 
-    return redirect('/transaksi/1')
+    if sumber == 'transaksi':
+        return redirect('transaksi/1')
+    elif sumber == 'pinjaman':
+        return redirect('/list_pesanan')

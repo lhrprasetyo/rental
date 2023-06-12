@@ -70,8 +70,9 @@
                       <td>{{p.tanggalPinjam}} -> {{p.tanggalKembali}}</td>
                       <td>{{p.totalHarga}}</td>
                       <td>
-                          <a href="/delete/{{p.id}}" class="btn btn-danger">Delete</a>
-                          <a href="/ongoing/{{p.id}}" class="btn btn-success">Mobil Dipinjam</a>
+                          <a href="{{ url_for('transaksiBlueprint.cancel_booking', sumber='pinjaman', id=p.id) }}" class="btn btn-danger">Cancel</a>
+                          <a href="/ongoing/{{p.id}}" class="btn btn-success">Ambil Mobil</a>
+                          <div class="text-end text-muted fst-italic fw-light fs-6">last updated : {{p.last_updated}}</div>
                       </td>
                   </tr>
                   {% endfor %}

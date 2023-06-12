@@ -61,107 +61,113 @@
 
         <div class="row">
           <div class="col-8">
-            Filters :
+            <h4>Filters:</h4>
             <div class="row">
               <div class="col-3">
                 <div class="dropdown">
-                  <button
-                    class="btn btn-secondary dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    fdprocessedid="u60adp"
-                    aria-placeholder="Status Mobil"
-                  >
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" fdprocessedid="u60adp" aria-placeholder="Status Mobil">
                     {% if request.args.get('status_mobil', '') != '' %}
-                    {{request.args.get('status_mobil', '')}} {% else %} Status
-                    Mobil {% endif %}
+                    {{request.args.get('status_mobil', '')}}
+                    {% else %}
+                    Status Mobil
+                    {% endif %}
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Dibooking', filter_date=request.args.get('filter_date', '')) }}">Dibooking</a>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Dibooking', filter_date=request.args.get('filter_date', ''), search=request.args.get('search')) }}">Dibooking</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Mobil dipinjam', filter_date=request.args.get('filter_date', '')) }}">Mobil Dipinjam</a>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Mobil dipinjam', filter_date=request.args.get('filter_date', ''), search=request.args.get('search')) }}">Mobil Dipinjam</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Selesai', filter_date=request.args.get('filter_date', '')) }}">Selesai</a>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Selesai', filter_date=request.args.get('filter_date', ''), search=request.args.get('search')) }}">Selesai</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Dibatalkan', filter_date=request.args.get('filter_date', '')) }}">Dibatalkan</a>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='Dibatalkan', filter_date=request.args.get('filter_date', ''), search=request.args.get('search')) }}">Dibatalkan</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='', filter_date=request.args.get('filter_date', '')) }}">All</a>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_transaksi=request.args.get('status_transaksi', ''), status_mobil='', filter_date=request.args.get('filter_date', ''), search=request.args.get('search')) }}">All</a>
                     </li>
                   </ul>
                 </div>
               </div>
               <div class="col-3">
                 <div class="dropdown">
-                  <button
-                    class="btn btn-secondary dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    fdprocessedid="u60adp"
-                  >
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" fdprocessedid="u60adp">
                     {% if request.args.get('status_transaksi', '') != '' %}
-                    {{request.args.get('status_transaksi', '')}} {% else %}
-                    Status Transaksi {% endif %}
+                    {{request.args.get('status_transaksi', '')}}
+                    {% else %}
+                    Status Transaksi
+                    {% endif %}
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_mobil=request.args.get('status_mobil', ''), status_transaksi='lunas', filter_date=request.args.get('filter_date', '')) }}">Lunas</a>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_mobil=request.args.get('status_mobil', ''), status_transaksi='lunas', filter_date=request.args.get('filter_date', ''), search=request.args.get('search')) }}">Lunas</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_mobil=request.args.get('status_mobil', ''), status_transaksi='Belum lunas', filter_date=request.args.get('filter_date', '')) }}">Belum Lunas</a>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_mobil=request.args.get('status_mobil', ''), status_transaksi='Belum lunas', filter_date=request.args.get('filter_date', ''), search=request.args.get('search')) }}">Belum Lunas</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_mobil=request.args.get('status_mobil', ''), status_transaksi='', filter_date=request.args.get('filter_date', '')) }}">All</a>
+                      <a class="dropdown-item" href="{{ url_for('transaksiBlueprint.list_transaksi', page=1, status_mobil=request.args.get('status_mobil', ''), status_transaksi='', filter_date=request.args.get('filter_date', ''), search=request.args.get('search')) }}">All</a>
                     </li>
                   </ul>
                 </div>
               </div>
               <div class="col-3">
-                <form method="GET" action="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.page) }}">
+                <form method="GET" action="{{ url_for('transaksiBlueprint.list_transaksi', page=1) }}">
                   <div class="form-group">
                     <input type="date" id="filter_date" name="filter_date" class="form-control" {% if not request.args.get('filter_date') %}value=""{% else %}value="{{ request.args.get('filter_date') }}"{% endif %}>
                   </div>
-                  <input type="hidden" name="status_transaksi" value="{{ request.args.get('status_transaksi') }}">
-                  <input type="hidden" name="status_mobil" value="{{ request.args.get('status_mobil') }}">
+                  <div class="inp">
+                    <input type="text" name="search" class="form-control" placeholder="Search . . . " value="{{ request.args.get('search', '') }}">
+                  </div>
+                  <input type="hidden" name="status_transaksi" value="{{ request.args.get('status_transaksi', '') }}">
+                  <input type="hidden" name="status_mobil" value="{{ request.args.get('status_mobil', '') }}">
+                  <div class="buttons mt-2">
+                    <button class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
               </div>
               <div class="col-3">
-                <button type="submit" class="btn btn-primary">Filter</button>
+                <form action="{{ url_for('transaksiBlueprint.list_transaksi', page=1) }}" method="GET">
+                  <input type="hidden" name="filter_date" value="">
+                  <input type="hidden" name="status_transaksi" value="">
+                  <input type="hidden" name="status_mobil" value="">
+                  <input type="hidden" name="search" value="">
+                  <div class="buttons mt-2">
+                    <button class="btn btn-secondary">Clear Filter</button>
+                  </div>
                 </form>
               </div>
             </div>
           </div>
+          
           <div class="text-end col-4">
             {% if transaksi.prev_num is not none %}
             <a
-              href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.prev_num) }}"
+              href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.prev_num, status_transaksi=request.args.get('status_transaksi'), status_mobil=request.args.get('status_mobil'), filter_date=request.args.get('filter_date'),search=request.args.get('search')) }}"
               class="btn btn-outline-dark {% if transaksi.page == 1 %}disabled{% endif %}"
             >
               &laquo;
             </a>
             {% endif %} {% for page_num in transaksi.iter_pages(left_edge=1,
-            right_edge=1, left_current=1, right_current=2) %} {% if page_num %}
-            {% if transaksi.page == page_num %}
+            right_edge=1, left_current=1, right_current=2) %} {% if page_num %} {% if
+            transaksi.page == page_num %}
             <a
-              href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num) }}"
+              href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num, status_transaksi=request.args.get('status_transaksi'), status_mobil=request.args.get('status_mobil'), filter_date=request.args.get('filter_date'),search=request.args.get('search')) }}"
               class="btn btn-dark"
               >{{ page_num }}</a
             >
             {% else %}
             <a
-              href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num) }}"
+              href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num, status_transaksi=request.args.get('status_transaksi'), status_mobil=request.args.get('status_mobil'), filter_date=request.args.get('filter_date'),search=request.args.get('search')) }}"
               class="btn btn-outline-dark"
               >{{ page_num }}</a
             >
             {% endif %} {% else %} . . . {% endif %} {% endfor %} {% if
             transaksi.next_num is not none %}
             <a
-              href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.next_num) }}"
+              href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.next_num, status_transaksi=request.args.get('status_transaksi'), status_mobil=request.args.get('status_mobil'), filter_date=request.args.get('filter_date'),search=request.args.get('search')) }}"
               class="btn btn-dark"
             >
               &raquo;
@@ -171,6 +177,7 @@
               Showing page {{ transaksi.page }} of {{ transaksi.pages }}
             </p>
           </div>
+          
         </div>
         <table class="table table-bordered mt-3">
           <thead>
@@ -209,7 +216,7 @@
               <td>
                 <div class="actions row">
                   <div class="col-2 mt-2" style="text-decoration: none">
-                    <a href="/invoice/{{p.id}}" style="color: black">
+                    <a href="/invoice/{{p.id}}" target="_blank" style="color: black">
                       <i data-feather="printer"></i>
                     </a>
                   </div>
@@ -233,7 +240,7 @@
                         <a
                           class="dropdown-item"
                           data-id=""
-                          href="/transaksi/cancel/{{p.id}}"
+                          href="{{ url_for('transaksiBlueprint.cancel_booking', sumber='transaksi', id=p.id) }}"
                           >Cancel</a
                         >
                       </li>
@@ -285,7 +292,6 @@
                     </ul>
                   </div>
                 </div>
-                <p class="text-muted fst-italic fw-light fs-6">last update: {{p.last_updated}}</p>
               </td>
             </tr>
             {% endfor %}
@@ -296,7 +302,7 @@
     <div class="text-center">
       {% if transaksi.prev_num is not none %}
       <a
-        href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.prev_num) }}"
+        href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.prev_num, status_transaksi=request.args.get('status_transaksi'), status_mobil=request.args.get('status_mobil'), filter_date=request.args.get('filter_date'),search=request.args.get('search')) }}"
         class="btn btn-outline-dark {% if transaksi.page == 1 %}disabled{% endif %}"
       >
         &laquo;
@@ -305,26 +311,27 @@
       right_edge=1, left_current=1, right_current=2) %} {% if page_num %} {% if
       transaksi.page == page_num %}
       <a
-        href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num) }}"
+        href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num, status_transaksi=request.args.get('status_transaksi'), status_mobil=request.args.get('status_mobil'), filter_date=request.args.get('filter_date'),search=request.args.get('search')) }}"
         class="btn btn-dark"
         >{{ page_num }}</a
       >
       {% else %}
       <a
-        href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num) }}"
+        href="{{ url_for('transaksiBlueprint.list_transaksi', page=page_num, status_transaksi=request.args.get('status_transaksi'), status_mobil=request.args.get('status_mobil'), filter_date=request.args.get('filter_date'),search=request.args.get('search')) }}"
         class="btn btn-outline-dark"
         >{{ page_num }}</a
       >
       {% endif %} {% else %} . . . {% endif %} {% endfor %} {% if
       transaksi.next_num is not none %}
       <a
-        href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.next_num) }}"
+        href="{{ url_for('transaksiBlueprint.list_transaksi', page=transaksi.next_num, status_transaksi=request.args.get('status_transaksi'), status_mobil=request.args.get('status_mobil'), filter_date=request.args.get('filter_date'),search=request.args.get('search')) }}"
         class="btn btn-dark"
       >
         &raquo;
       </a>
       {% endif %}
     </div>
+    
     <p class="text-center mt-1">
       Showing page {{ transaksi.page }} of {{ transaksi.pages }}
     </p>
